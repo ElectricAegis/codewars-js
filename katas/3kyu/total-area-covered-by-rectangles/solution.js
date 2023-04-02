@@ -34,14 +34,12 @@ function calculate(recs){
   for (let i = 0; i < recs.length; i++){
     const rec = recs[i];
 
-    //x_distance for intersecting rectangle = min(r1.x, r2.x) – max(l1.x, l2.x)
-    //y_distance for 1st rectangle = min(r1.y, r2.y) – max(l1.y, l2.y)
     let area = calculateArea(rec);
     total += area;
-    for (const otherRec of recs.slice(i+1)){
-      let intersectionInfo = calculateIntersectionInfo(rec, otherRec);
-      total -= intersectionInfo.intersectionArea;
-    }
+    let intersectionRecs = recs.slice(i+1).map(otherRec => calculateIntersectionInfo(rec, otherRec))
+      .filter(intersectionInfo => intersectionInfo.intersectionArea != 0)
+      .map(intersectionInfo => intersectionInfo.intersectionRec);
+    total -= calculate(intersectionRecs);
 
   }
 
