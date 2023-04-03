@@ -36,6 +36,17 @@ function calculateIntersectionInfo(rec, otherRec) {
   return {intersectionArea, intersectionRec};
 }
 
+function getIntersectingRectangles(i, recs, rec) {
+  const intersectionRecs = [];
+  for (let j = i + 1; j < recs.length; ++j) {
+    let intersectionInfo = calculateIntersectionInfo(rec, recs[j]);
+    if (intersectionInfo.intersectionArea !== 0) {
+      intersectionRecs.push(intersectionInfo.intersectionRec);
+    }
+  }
+  return intersectionRecs;
+}
+
 /**
  *
  * @param {number[][]} recs
@@ -48,13 +59,7 @@ function calculate(recs){
     const rec = recs[i];
     total += calculateArea(rec);
 
-    const intersectionRecs = [];
-    for (let j = i+1; j < recs.length; ++j) {
-      let intersectionInfo = calculateIntersectionInfo(rec, recs[j]);
-      if (intersectionInfo.intersectionArea !== 0){
-        intersectionRecs.push(intersectionInfo.intersectionRec);
-      }
-    }
+    const intersectionRecs = getIntersectingRectangles(i, recs, rec);
 
     total -= calculate(intersectionRecs);
   }
