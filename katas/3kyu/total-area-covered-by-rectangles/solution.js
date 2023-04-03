@@ -10,17 +10,17 @@ function calculateArea(rec) {
 
 function getIntersectionRec(rec, otherRec) {
   let intersectionRec = [
-    Math.max(rec[0], otherRec[0]),
-    Math.max(rec[1], otherRec[1]),
-    Math.min(rec[2], otherRec[2]),
-    Math.min(rec[3], otherRec[3])
+    rec[0] > otherRec[0] ? rec[0] : otherRec[0],
+    rec[1] > otherRec[1] ? rec[1] : otherRec[1],
+    rec[2] < otherRec[2] ? rec[2] : otherRec[2],
+    rec[3] < otherRec[3] ? rec[3] : otherRec[3]
   ];
   return intersectionRec;
 }
 
 function calculateIntersectionInfo(rec, otherRec) {
   let intersectionRec = getIntersectionRec(rec, otherRec);
-  let intersectionArea = Math.max(0, calculateArea(intersectionRec));
+  let intersectionArea = calculateArea(intersectionRec);
   return {intersectionArea, intersectionRec};
 }
 
@@ -31,16 +31,22 @@ function calculateIntersectionInfo(rec, otherRec) {
  */
 function calculate(recs){
   let total = 0;
-  for (let i = 0; i < recs.length; i++){
-    const rec = recs[i];
+  let length = recs.length;
+  for (let i = 0; i < length; i++){
+    const rec = recs.shift();
 
     let area = calculateArea(rec);
     total += area;
-    let intersectionRecs = recs.slice(i+1).map(otherRec => calculateIntersectionInfo(rec, otherRec))
-      .filter(intersectionInfo => intersectionInfo.intersectionArea != 0)
-      .map(intersectionInfo => intersectionInfo.intersectionRec);
-    total -= calculate(intersectionRecs);
 
+    const intersectionRecs = [];
+    for (let j = 0; j < recs.length; ++j) {
+      let intersectionInfo = calculateIntersectionInfo(rec, recs[j]);
+      if (intersectionInfo.intersectionArea != 0){
+        intersectionRecs.push(intersectionInfo.intersectionRec);
+      }
+    }
+
+    total -= calculate(intersectionRecs);
   }
 
   return total;
