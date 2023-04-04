@@ -101,4 +101,22 @@ describe("performance tests", function () {
     const t1 = performance.now();
     expect(t1 - t0).toBeLessThan(1.4);
   });
+
+  it("very hard! less than 1.4ms", function () {
+    const t0 = performance.now();
+    calculate([[3,3,6,5],[4,4,6,6],[4,3,7,5],[4,2,8,5],[4,3,8,6],[9,0,11,4],[9,1,10,6],[9,0,12,2],[10,1,13,5],[12,4,15,6],[14,1,16,5],[12,1,17,2]]);
+    const t1 = performance.now();
+    expect(t1 - t0).toBeLessThan(1);
+  });
+
+  it("very hard! x2 less than 1.4ms", function () {
+    let recs = [[3,3,6,5],[4,4,6,6],[4,3,7,5],[4,2,8,5],[4,3,8,6],[9,0,11,4],[9,1,10,6],[9,0,12,2],[10,1,13,5],[12,4,15,6],[14,1,16,5],[12,1,17,2]];
+    const recs2 = recs.map(rec => rec.map(point => point + 5));
+
+    recs = [...recs, ...recs2];
+    const t0 = performance.now();
+    calculate(recs);
+    const t1 = performance.now();
+    expect(t1 - t0).toBeLessThan(1);
+  });
 });
