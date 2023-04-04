@@ -47,15 +47,31 @@ function getIntersectingRectangles(i, recs, rec) {
   return intersectionRecs;
 }
 
+function isIntersected(rec, otherRec) {
+  // if rectangle has area 0, no overlap
+  if (rec[0] === rec[2] || rec[1] === rec[3] || otherRec[0] === otherRec[2] || otherRec[3] === otherRec[1])
+    return false;
+
+  // If one rectangle is on left side of other
+  if (rec[0] > otherRec[2] || otherRec[0] > rec[2])
+    return false;
+
+  // If one rectangle is above other
+  if (rec[1] > otherRec[3] || otherRec[1] > rec[3])
+    return false;
+
+  return true;
+}
+
 /**
  *
  * @param {number[][]} recs
  * @returns {number}
  */
-function calculate(recs){
+function calculate(recs) {
   let total = 0;
 
-  for (let i = 0; i < recs.length; i++){
+  for (let i = 0; i < recs.length; i++) {
     const rec = recs[i];
     total += calculateArea(rec);
 
