@@ -25,7 +25,7 @@ function getIntersectionRec(rec, otherRec) {
 }
 
 /**
- * Return a rectangle that is the intersection of two other rectangles and it's area
+ * Return a rectangle that is the intersection of two other rectangles, and it's area
  * @param {number[]} rec
  * @param {number[]} otherRec
  * @returns {{intersectionRec: number[], intersectionArea: number}} intersection rectangle info
@@ -39,28 +39,24 @@ function calculateIntersectionInfo(rec, otherRec) {
 function getIntersectingRectangles(i, recs, rec) {
   const intersectionRecs = [];
   for (let j = i + 1; j < recs.length; ++j) {
-    let intersectionInfo = calculateIntersectionInfo(rec, recs[j]);
-    if (intersectionInfo.intersectionArea !== 0) {
-      intersectionRecs.push(intersectionInfo.intersectionRec);
+    let otherRec = recs[j];
+    if(!otherRec) {
+      continue;
+    }
+    if (isInside(rec, otherRec)) {
+      recs[j] = null;
+    } else {
+      let intersectionInfo = calculateIntersectionInfo(rec, otherRec);
+      if (intersectionInfo.intersectionArea !== 0) {
+        intersectionRecs.push(intersectionInfo.intersectionRec);
+      }
     }
   }
   return intersectionRecs;
 }
 
-function isIntersected(rec, otherRec) {
-  // if rectangle has area 0, no overlap
-  if (rec[0] === rec[2] || rec[1] === rec[3] || otherRec[0] === otherRec[2] || otherRec[3] === otherRec[1])
-    return false;
-
-  // If one rectangle is on left side of other
-  if (rec[0] > otherRec[2] || otherRec[0] > rec[2])
-    return false;
-
-  // If one rectangle is above other
-  if (rec[1] > otherRec[3] || otherRec[1] > rec[3])
-    return false;
-
-  return true;
+function isInside(rec, otherRec) {
+  return rec[0] <= otherRec[0] && rec[1] <= otherRec[1] && rec[2] >= otherRec[2] && rec[3] >= otherRec[3]
 }
 
 /**
@@ -73,6 +69,7 @@ function calculate(recs) {
 
   for (let i = 0; i < recs.length; i++) {
     const rec = recs[i];
+    if (!rec) continue;
     total += calculateArea(rec);
 
     const intersectionRecs = getIntersectingRectangles(i, recs, rec);

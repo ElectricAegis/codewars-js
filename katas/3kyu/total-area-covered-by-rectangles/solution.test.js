@@ -95,21 +95,21 @@ describe("More fixed cases", function() {
 });
 
 describe("performance tests", function () {
-  it("waterfall less than 1.4ms", function () {
+  it("waterfall less than 1ms", function () {
     const t0 = performance.now();
     calculate([[2, 2, 17, 2], [2, 2, 17, 4], [2, 2, 17, 6], [2, 2, 17, 8], [2, 2, 17, 10], [2, 2, 17, 12], [2, 2, 17, 14], [2, 2, 17, 16], [2, 2, 17, 18], [2, 2, 17, 20], [2, 2, 17, 22], [2, 2, 17, 24], [2, 2, 17, 26], [2, 2, 17, 28]]);
     const t1 = performance.now();
-    expect(t1 - t0).toBeLessThan(1.4);
+    expect(t1 - t0).toBeLessThan(1);
   });
 
-  it("very hard! less than 1.4ms", function () {
+  it("very hard! less than 1ms", function () {
     const t0 = performance.now();
     calculate([[3,3,6,5],[4,4,6,6],[4,3,7,5],[4,2,8,5],[4,3,8,6],[9,0,11,4],[9,1,10,6],[9,0,12,2],[10,1,13,5],[12,4,15,6],[14,1,16,5],[12,1,17,2]]);
     const t1 = performance.now();
     expect(t1 - t0).toBeLessThan(1);
   });
 
-  it("very hard! x2 less than 1.4ms", function () {
+  it("very hard! x2 less than 1ms", function () {
     let recs = [[3,3,6,5],[4,4,6,6],[4,3,7,5],[4,2,8,5],[4,3,8,6],[9,0,11,4],[9,1,10,6],[9,0,12,2],[10,1,13,5],[12,4,15,6],[14,1,16,5],[12,1,17,2]];
     const recs2 = recs.map(rec => rec.map(point => point + 5));
 
