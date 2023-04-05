@@ -1,5 +1,5 @@
 /**
- * Calculate the area of a rectangle
+ * Calculate the area of a rectangle, returns 0 if the rectangle vertices are inverted
  * @param {number[]} rec
  * @returns {number} area
  */
@@ -36,6 +36,13 @@ function calculateIntersectionInfo(rec, otherRec) {
   return {intersectionArea, intersectionRec};
 }
 
+/**
+ * Find all intersecting rectangles
+ * @param {number} i index of where to start searching intersecting rectangles
+ * @param {number[][]} recs array of rectangles to search
+ * @param {number[]} rec the rectangle for which to find intersections for
+ * @return {number[][]} intersecting rectangles
+ */
 function getIntersectingRectangles(i, recs, rec) {
   const intersectionRecs = [];
   for (let j = i + 1; j < recs.length; ++j) {
@@ -44,7 +51,7 @@ function getIntersectingRectangles(i, recs, rec) {
       continue;
     }
     if (isInside(rec, otherRec)) {
-      recs[j] = null;
+      recs[j] = null; //optimization: remove rectangles that are captured entirely by another rectangle
     } else {
       let intersectionInfo = calculateIntersectionInfo(rec, otherRec);
       if (intersectionInfo.intersectionArea !== 0) {
@@ -55,6 +62,12 @@ function getIntersectingRectangles(i, recs, rec) {
   return intersectionRecs;
 }
 
+/**
+ * Determine if rec contains otherRec entirely
+ * @param rec
+ * @param otherRec
+ * @return {boolean}
+ */
 function isInside(rec, otherRec) {
   return rec[0] <= otherRec[0] && rec[1] <= otherRec[1] && rec[2] >= otherRec[2] && rec[3] >= otherRec[3]
 }
