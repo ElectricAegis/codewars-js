@@ -23,15 +23,20 @@ function compareArrays(array1, array2) {
 }
 
 function collapseArray(arr) {
-  let primeTestResults = arr.map(x => isPrime(x));
-  let collapsedArray = [0]
-  for (let i = 0; i < primeTestResults.length - 1; i++) {
-    collapsedArray[collapsedArray.length - 1] += arr[i];
-    if (primeTestResults[i] !== primeTestResults[i + 1]) {
-      collapsedArray.push(0);
+  let iterator = 0;
+  let collapsedArray = [];
+  let prevPrimeState = null;
+  while (iterator !== arr.length) {
+    let currentPrimeState = isPrime(arr[iterator]);
+    if (currentPrimeState === prevPrimeState) {
+      collapsedArray[collapsedArray.length - 1] += arr[iterator];
+    } else {
+      collapsedArray.push(arr[iterator]);
+      prevPrimeState = currentPrimeState;
     }
+    iterator++;
   }
-  collapsedArray[collapsedArray.length - 1] += arr[arr.length - 1];
+
   return collapsedArray;
 }
 
