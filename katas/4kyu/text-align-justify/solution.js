@@ -12,6 +12,8 @@ function justify(text, width) {
     }
     if (lineLength <= width && textArray.length === 0) {
       newText += lineArray.map(x => x.word).join('');
+    } else if (lineArray.filter(x => x.type === 'space').length === 0) {
+      newText += lineArray.map(x => x.word).join('') + '\n';
     } else {
       let spaces = lineArray.filter(x => x.type === 'space');
       while (lineArray.reduce((accumulator, nextValue) => accumulator + nextValue.word.length, 0) < width) {
